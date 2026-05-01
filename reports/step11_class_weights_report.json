@@ -1,0 +1,16 @@
+{
+  "class_indices": {
+    "WithMask": 0,
+    "WithoutMask": 1
+  },
+  "total_train_samples": 5866,
+  "per_class_sample_counts": {
+    "WithMask": 2933,
+    "WithoutMask": 2933
+  },
+  "class_weights": {
+    "0": 1.0,
+    "1": 1.0
+  },
+  "usage": "Pass the class_weights dict to model.fit(class_weight=class_weights)"
+}

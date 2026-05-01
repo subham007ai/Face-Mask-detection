@@ -1,0 +1,572 @@
+{
+  "strategy": "keep all WithMask and downsample WithoutMask per split to match WithMask counts",
+  "total_before": 10135,
+  "total_after": 8626,
+  "removed_total": 1509,
+  "removed_counts": {
+    "WithMask": 0,
+    "WithoutMask": 1509
+  },
+  "removed_by_split": {
+    "Train": 1230,
+    "Validation": 130,
+    "Test": 149
+  },
+  "selection_summary": {
+    "Train": {
+      "withmask_kept": 3692,
+      "withoutmask_total": 4922,
+      "withoutmask_kept": 3692,
+      "withoutmask_removed": 1230
+    },
+    "Validation": {
+      "withmask_kept": 267,
+      "withoutmask_total": 397,
+      "withoutmask_kept": 267,
+      "withoutmask_removed": 130
+    },
+    "Test": {
+      "withmask_kept": 354,
+      "withoutmask_total": 503,
+      "withoutmask_kept": 354,
+      "withoutmask_removed": 149
+    }
+  },
+  "final_counts": {
+    "Train": {
+      "WithMask": 3692,
+      "WithoutMask": 3692
+    },
+    "Validation": {
+      "WithMask": 267,
+      "WithoutMask": 267
+    },
+    "Test": {
+      "WithMask": 354,
+      "WithoutMask": 354
+    }
+  },
+  "corrupted_after_cleanup": [],
+  "sample_removed": [
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\101.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "101.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1011.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1011.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1020.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1020.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1022.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1022.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1024.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1024.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1030.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1030.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1037.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1037.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1042.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1042.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1045.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1045.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\105.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "105.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1051.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1051.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1056.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1056.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1064.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1064.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1065.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1065.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1071.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1071.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1073.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1073.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1077.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1077.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1080.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1080.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1089.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1089.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1090.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1090.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1099.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1099.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1102.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1102.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1104.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1104.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1106.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1106.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1112.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1112.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1115.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1115.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1117.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1117.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\112.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "112.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1124.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1124.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1128.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1128.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1131.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1131.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1132.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1132.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1133.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1133.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1136.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1136.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1138.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1138.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\114.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "114.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1142.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1142.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1144.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1144.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1145.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1145.png"
+      ]
+    },
+    {
+      "path": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1153.png",
+      "split": "Train",
+      "class": "WithoutMask",
+      "score": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1,
+        -1,
+        "1153.png"
+      ]
+    }
+  ]
+}

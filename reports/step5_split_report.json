@@ -1,0 +1,96 @@
+{
+  "seed": 20260501,
+  "strategy": "stratified shuffle 80/20 by class, copy from cleaned source dataset",
+  "source_total": 8626,
+  "counts": {
+    "train": {
+      "WithMask": 3450,
+      "WithoutMask": 3450
+    },
+    "test": {
+      "WithMask": 863,
+      "WithoutMask": 863
+    }
+  },
+  "train_total": 6900,
+  "test_total": 1726,
+  "train_ratio": 0.799907,
+  "test_ratio": 0.200093,
+  "overlap_sha256": [],
+  "split_plan": {
+    "WithMask": {
+      "train": 3450,
+      "test": 863
+    },
+    "WithoutMask": {
+      "train": 3450,
+      "test": 863
+    }
+  },
+  "manifest_sample": {
+    "train": [
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithMask\\Augmented_409_8424333.png",
+        "dest": "D:\\4thSemproject\\data\\train\\WithMask\\Augmented_409_8424333.png",
+        "sha256": "5bf498d0ca5eb7a0cbbfea9116b69f840780cc54aa05c146f29e7c412496a937"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithMask\\Augmented_203_6552750.png",
+        "dest": "D:\\4thSemproject\\data\\train\\WithMask\\Augmented_203_6552750.png",
+        "sha256": "2e66b827c65273e32fe1d84a5d2c83d2912869ab402a87f7c1a3f1487139debc"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithMask\\Augmented_267_984581.png",
+        "dest": "D:\\4thSemproject\\data\\train\\WithMask\\Augmented_267_984581.png",
+        "sha256": "b4a945e810e4f954d39dc73554b21797f18564ee14c3947e783cdcaa4ff4602c"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\1038.png",
+        "dest": "D:\\4thSemproject\\data\\train\\WithoutMask\\1038.png",
+        "sha256": "e8d8cf2038baaa33ec680d2e4c40c2a1891ae7fb606418a7df98f2f1c8006c89"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\3783.png",
+        "dest": "D:\\4thSemproject\\data\\train\\WithoutMask\\3783.png",
+        "sha256": "c3e1d1251b3d3e916a6fd8a10b078db45901bf476a59734e4b6a4454a523f563"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\4465.png",
+        "dest": "D:\\4thSemproject\\data\\train\\WithoutMask\\4465.png",
+        "sha256": "a0c4490637173b43c419e97510aff0b62c17b1979fbcc3d4b64ff366bd675c99"
+      }
+    ],
+    "test": [
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithMask\\Augmented_424_773433.png",
+        "dest": "D:\\4thSemproject\\data\\test\\WithMask\\Augmented_424_773433.png",
+        "sha256": "bd81eef938c7a42084ac1f362786979fcab56ad7bd6be4c0345356a6a2d84bbb"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Validation\\WithMask\\Augmented_275_9941216.png",
+        "dest": "D:\\4thSemproject\\data\\test\\WithMask\\Augmented_275_9941216.png",
+        "sha256": "f0625f6696fab53f7034bcdbf6aaf35ceed2effa95e8888a5223603c36a43d08"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Test\\WithMask\\Augmented_109_7550607.png",
+        "dest": "D:\\4thSemproject\\data\\test\\WithMask\\Augmented_109_7550607.png",
+        "sha256": "879b5916be16d8967e707431347572eacad1f51ee805c665050d1e04e821c69a"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\5008.png",
+        "dest": "D:\\4thSemproject\\data\\test\\WithoutMask\\5008.png",
+        "sha256": "72fc3504b7a24c3712e4365d4c018a798120d68ec7f119cc63e33d9a3aa3c5db"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Test\\WithoutMask\\3987.png",
+        "dest": "D:\\4thSemproject\\data\\test\\WithoutMask\\3987.png",
+        "sha256": "f5407ee56b13bdde996f7b6d64676d914cfd9f9044c7f037d3a6cfa929d033cb"
+      },
+      {
+        "src": "D:\\4thSemproject\\Face Mask Dataset\\Train\\WithoutMask\\3254.png",
+        "dest": "D:\\4thSemproject\\data\\test\\WithoutMask\\3254.png",
+        "sha256": "de4d414ad7f03517e7c02f4fa6f46eb080e902c898ba73b7112edafd97959822"
+      }
+    ]
+  }
+}

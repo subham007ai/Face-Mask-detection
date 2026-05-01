@@ -1,0 +1,39 @@
+{
+  "seed": 20260501,
+  "image_size": [
+    224,
+    224
+  ],
+  "train_samples": 6900,
+  "test_samples": 1726,
+  "train_class_counts": {
+    "WithMask": 3450,
+    "WithoutMask": 3450
+  },
+  "test_class_counts": {
+    "WithMask": 863,
+    "WithoutMask": 863
+  },
+  "transforms": {
+    "train": {
+      "resize": "224x224",
+      "rescale": "1./255",
+      "augmentation": {
+        "rotation_degrees": [
+          -20,
+          20
+        ],
+        "zoom_range": [
+          0.85,
+          1.15
+        ],
+        "horizontal_flip": true
+      }
+    },
+    "test": {
+      "resize": "224x224",
+      "rescale": "1./255",
+      "augmentation": null
+    }
+  }
+}

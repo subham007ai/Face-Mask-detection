@@ -1,0 +1,60 @@
+{
+  "seed": 20260501,
+  "validation_split": 0.15,
+  "batch_size": 32,
+  "target_size": [
+    224,
+    224
+  ],
+  "class_mode": "binary",
+  "class_indices": {
+    "WithMask": 0,
+    "WithoutMask": 1
+  },
+  "train": {
+    "samples": 5866,
+    "batch_shape": [
+      32,
+      224,
+      224,
+      3
+    ],
+    "label_shape": [
+      32
+    ],
+    "augmentation": {
+      "rotation_range": 20,
+      "zoom_range": 0.15,
+      "horizontal_flip": true
+    },
+    "rescale": "1./255"
+  },
+  "validation": {
+    "samples": 1034,
+    "batch_shape": [
+      32,
+      224,
+      224,
+      3
+    ],
+    "label_shape": [
+      32
+    ],
+    "augmentation": null,
+    "rescale": "1./255"
+  },
+  "test": {
+    "samples": 1726,
+    "batch_shape": [
+      32,
+      224,
+      224,
+      3
+    ],
+    "label_shape": [
+      32
+    ],
+    "augmentation": null,
+    "rescale": "1./255"
+  }
+}
