@@ -1,4 +1,4 @@
-# 😷 Face Mask Detection
+#  Face Mask Detection
 
 A binary image classification pipeline that detects whether a person is wearing a face mask or not. Built with **TensorFlow/Keras** and a rigorously cleaned dataset.
 
@@ -38,7 +38,7 @@ Face-Mask-Detection/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -81,7 +81,7 @@ pip install -r requirements.txt
 
 ---
 
-## 📊 Dataset Summary
+##  Dataset Summary
 
 | Split      | WithMask | WithoutMask | Total  |
 |------------|----------|-------------|--------|
@@ -129,7 +129,7 @@ model.fit(
 
 ---
 
-## 🧹 Data Cleaning Pipeline (Completed)
+##  Data Cleaning Pipeline (Completed)
 
 The raw dataset went through an 11-step cleaning and preparation pipeline. Full details are in [`PIPELINE.md`](PIPELINE.md).
 
@@ -149,7 +149,7 @@ The raw dataset went through an 11-step cleaning and preparation pipeline. Full 
 
 ---
 
-## 🧠 Next Steps
+##  Next Steps
 
 - [ ] Build and train the CNN model architecture
 - [ ] Evaluate on test set with confusion matrix and classification report
@@ -158,7 +158,7 @@ The raw dataset went through an 11-step cleaning and preparation pipeline. Full 
 
 ---
 
-## 👥 Team
+##  Team
 
 - **Subham** — Data pipeline, preprocessing, and project setup
 
