@@ -21,7 +21,7 @@ import numpy as np
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
-ROOT = Path(r"D:\4thSemproject")
+ROOT = Path(__file__).parent.resolve()
 DATA_ROOT = ROOT / "data"
 REPORT_PATH = ROOT / "reports" / "step7_generator_report.json"
 

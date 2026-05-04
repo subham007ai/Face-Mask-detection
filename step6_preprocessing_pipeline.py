@@ -24,7 +24,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
-ROOT = Path(r"D:\4thSemproject")
+ROOT = Path(__file__).parent.resolve()
 DATA_ROOT = ROOT / "data"
 REPORT_PATH = ROOT / "reports" / "step6_pipeline_report.json"
 PREVIEW_PATH = ROOT / "reports" / "step6_preview.png"

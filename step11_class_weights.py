@@ -22,7 +22,7 @@ from sklearn.utils.class_weight import compute_class_weight
 from step10_validation_split_generators import build_generators
 
 
-ROOT = Path(r"D:\4thSemproject")
+ROOT = Path(__file__).parent.resolve()
 REPORT_PATH = ROOT / "reports" / "step11_class_weights_report.json"
 
 
