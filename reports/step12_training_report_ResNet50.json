@@ -1,0 +1,31 @@
+{
+  "model": "ResNet50",
+  "architecture": {
+    "base": "ResNet50 (ImageNet weights, include_top=False)",
+    "head": [
+      "GlobalAveragePooling2D",
+      "Dropout(0.5)",
+      "Dense(1, sigmoid)"
+    ]
+  },
+  "compilation": {
+    "optimizer": "Adam (lr=1e-4)",
+    "loss": "binary_crossentropy",
+    "metrics": [
+      "accuracy"
+    ]
+  },
+  "training": {
+    "epochs": 25,
+    "batch_size": 32,
+    "train_samples": 5866,
+    "val_samples": 1034
+  },
+  "final_metrics": {
+    "train_accuracy": 0.9994885921478271,
+    "train_loss": 0.0014819755451753736,
+    "val_accuracy": 0.990328848361969,
+    "val_loss": 0.02880728431046009
+  },
+  "saved_model": "/content/Face-Mask-detection/avijit_task/mask_model_ResNet50.h5"
+}

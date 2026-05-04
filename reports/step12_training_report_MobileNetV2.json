@@ -1,0 +1,31 @@
+{
+  "model": "MobileNetV2",
+  "architecture": {
+    "base": "MobileNetV2 (ImageNet weights, include_top=False)",
+    "head": [
+      "GlobalAveragePooling2D",
+      "Dropout(0.5)",
+      "Dense(1, sigmoid)"
+    ]
+  },
+  "compilation": {
+    "optimizer": "Adam (lr=1e-4)",
+    "loss": "binary_crossentropy",
+    "metrics": [
+      "accuracy"
+    ]
+  },
+  "training": {
+    "epochs": 25,
+    "batch_size": 32,
+    "train_samples": 5866,
+    "val_samples": 1034
+  },
+  "final_metrics": {
+    "train_accuracy": 1.0,
+    "train_loss": 1.606493242434226e-05,
+    "val_accuracy": 0.9845260977745056,
+    "val_loss": 0.07057680934667587
+  },
+  "saved_model": "/content/Face-Mask-detection/avijit_task/mask_model_MobileNetV2.h5"
+}

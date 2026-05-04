@@ -1,0 +1,48 @@
+{
+  "model_name": "ResNet50",
+  "test_loss": 0.013289797119796276,
+  "test_accuracy": 0.9953650236129761,
+  "confusion_matrix": {
+    "True WithMask": 855,
+    "False WithoutMask": 8,
+    "False WithMask": 0,
+    "True WithoutMask": 863,
+    "raw_matrix": [
+      [
+        855,
+        8
+      ],
+      [
+        0,
+        863
+      ]
+    ]
+  },
+  "classification_report": {
+    "WithMask": {
+      "precision": 1.0,
+      "recall": 0.9907300115874855,
+      "f1-score": 0.9953434225844005,
+      "support": 863.0
+    },
+    "WithoutMask": {
+      "precision": 0.9908151549942594,
+      "recall": 1.0,
+      "f1-score": 0.9953863898500577,
+      "support": 863.0
+    },
+    "accuracy": 0.9953650057937428,
+    "macro avg": {
+      "precision": 0.9954075774971297,
+      "recall": 0.9953650057937428,
+      "f1-score": 0.9953649062172291,
+      "support": 1726.0
+    },
+    "weighted avg": {
+      "precision": 0.9954075774971297,
+      "recall": 0.9953650057937428,
+      "f1-score": 0.995364906217229,
+      "support": 1726.0
+    }
+  }
+}

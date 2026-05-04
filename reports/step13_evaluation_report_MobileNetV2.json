@@ -1,0 +1,48 @@
+{
+  "model_name": "MobileNetV2",
+  "test_loss": 0.011338013224303722,
+  "test_accuracy": 0.9959443807601929,
+  "confusion_matrix": {
+    "True WithMask": 856,
+    "False WithoutMask": 7,
+    "False WithMask": 0,
+    "True WithoutMask": 863,
+    "raw_matrix": [
+      [
+        856,
+        7
+      ],
+      [
+        0,
+        863
+      ]
+    ]
+  },
+  "classification_report": {
+    "WithMask": {
+      "precision": 1.0,
+      "recall": 0.9918887601390498,
+      "f1-score": 0.9959278650378127,
+      "support": 863.0
+    },
+    "WithoutMask": {
+      "precision": 0.9919540229885058,
+      "recall": 1.0,
+      "f1-score": 0.9959607616849394,
+      "support": 863.0
+    },
+    "accuracy": 0.9959443800695249,
+    "macro avg": {
+      "precision": 0.9959770114942529,
+      "recall": 0.9959443800695249,
+      "f1-score": 0.9959443133613761,
+      "support": 1726.0
+    },
+    "weighted avg": {
+      "precision": 0.9959770114942529,
+      "recall": 0.9959443800695249,
+      "f1-score": 0.9959443133613761,
+      "support": 1726.0
+    }
+  }
+}

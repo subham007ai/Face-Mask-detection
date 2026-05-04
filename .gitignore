@@ -32,3 +32,8 @@ build/
 
 # Logs
 *.log
+
+# Models & Large Data
+*.h5
+*.zip
+

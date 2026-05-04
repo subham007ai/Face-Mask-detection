@@ -1,0 +1,48 @@
+{
+  "model_name": "EfficientNetB0",
+  "test_loss": 0.000744201650377363,
+  "test_accuracy": 1.0,
+  "confusion_matrix": {
+    "True WithMask": 863,
+    "False WithoutMask": 0,
+    "False WithMask": 0,
+    "True WithoutMask": 863,
+    "raw_matrix": [
+      [
+        863,
+        0
+      ],
+      [
+        0,
+        863
+      ]
+    ]
+  },
+  "classification_report": {
+    "WithMask": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 863.0
+    },
+    "WithoutMask": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 863.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 1726.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 1726.0
+    }
+  }
+}
