@@ -227,3 +227,22 @@
 - The weights auto-adjust if the dataset composition changes in a future re-run.
 
 > 📎 Detailed report: [`reports/step11_class_weights_report.json`](reports/step11_class_weights_report.json)
+
+## EDA: Exploratory Data Analysis
+
+- Added `step_eda.py` to produce a full visual and statistical exploration of the final prepared dataset (`data/train` and `data/test`).
+- Analyses performed:
+  1. **Class distribution** – bar charts showing per-class image counts for train and test splits (perfectly balanced at 3,450 / 3,450 train, 863 / 863 test).
+  2. **Sample image grid** – 5 representative thumbnails per class per split to confirm visual quality and label consistency.
+  3. **Resolution analysis** – overlapping width/height histograms across classes. Key finding: `WithMask` images cluster near 224px (many already at target size), while `WithoutMask` images cluster around 106px (smaller native resolution – these are cropped face patches).
+  4. **Pixel channel stats** – grouped bar chart of per-channel (R/G/B) mean intensity. `WithoutMask` images show notably higher R-channel mean (0.605) vs `WithMask` (0.544), reflecting more exposed skin tone. Both classes show similar G and B distributions.
+  5. **Blur score distribution** – Laplacian variance histograms and box plots. `WithoutMask` images are sharper on average (mean ~817 vs ~598 for `WithMask`), consistent with them being tightly cropped face crops vs wider scene images with masks.
+- Outputs:
+  - `reports/eda_01_class_distribution.png`
+  - `reports/eda_02_sample_grid.png`
+  - `reports/eda_03_resolution.png`
+  - `reports/eda_04_channel_stats.png`
+  - `reports/eda_05_blur.png`
+- Elapsed: 44.3 seconds for 6,900 train + 1,726 test images.
+
+> 📎 Detailed report: [`reports/step_eda_report.json`](reports/step_eda_report.json)
