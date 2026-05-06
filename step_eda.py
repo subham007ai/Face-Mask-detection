@@ -341,10 +341,16 @@ def fig_channel_stats(collected: Dict) -> Path:
 # ---------------------------------------------------------------------------
 
 def fig_blur(collected: Dict) -> Path:
-    """Box + violin plot of Laplacian blur variance per class."""
+    """Histogram + box plot of Laplacian blur variance per class,
+    with a vertical reference line at the Step-3 quality threshold (var=65).
+    """
+    BLUR_THRESHOLD = 65  # Step 3 quality filter: images below this were removed
+
     fig, axes = plt.subplots(1, 2, figsize=(11, 5), dpi=FIGURE_DPI)
-    fig.suptitle("Blur Score Distribution  (Laplacian Variance – higher = sharper)",
-                 fontsize=12, fontweight="bold", y=1.01)
+    fig.suptitle(
+        "Blur Score Distribution  (Laplacian Variance, higher = sharper)",
+        fontsize=12, fontweight="bold", y=1.01,
+    )
 
     # --- left: overlapping histograms ---
     ax = axes[0]
@@ -357,6 +363,21 @@ def fig_blur(collected: Dict) -> Path:
         capped = [min(v, cap) for v in vals]
         ax.hist(capped, bins=60, alpha=0.60, color=PALETTE[cls],
                 label=f"{cls}  (mean={np.mean(vals):.1f})", edgecolor="none")
+
+    # Step 3 quality threshold
+    ax.axvline(
+        x=BLUR_THRESHOLD, color="#e53935", linewidth=1.6,
+        linestyle="--", zorder=5,
+    )
+    ymax = ax.get_ylim()[1]
+    ax.text(
+        BLUR_THRESHOLD + 4, ymax * 0.92,
+        f"Step-3 threshold\n(var = {BLUR_THRESHOLD})",
+        color="#e53935", fontsize=8, va="top", ha="left",
+        bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="#e53935",
+                  alpha=0.85, linewidth=0.8),
+    )
+
     ax.set_title("Histogram (98th-pct capped)", fontsize=10)
     ax.set_xlabel("Laplacian variance", fontsize=9)
     ax.set_ylabel("Count", fontsize=9)
@@ -379,6 +400,12 @@ def fig_blur(collected: Dict) -> Path:
     for patch, cls in zip(bp["boxes"], CLASSES):
         patch.set_facecolor(PALETTE[cls])
         patch.set_alpha(0.75)
+    # threshold reference on box plot
+    ax.axhline(
+        y=BLUR_THRESHOLD, color="#e53935", linewidth=1.4,
+        linestyle="--", zorder=5, label=f"Threshold (var={BLUR_THRESHOLD})",
+    )
+    ax.legend(fontsize=8, loc="upper left")
     ax.set_xticks([1, 2])
     ax.set_xticklabels(CLASSES, fontsize=10)
     ax.set_ylabel("Laplacian variance", fontsize=9)
