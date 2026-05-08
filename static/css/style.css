@@ -1,0 +1,345 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Face Mask Detection — Stylesheet
+   Liquid Glass · Frosted · Premium
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── Reset ────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── Design Tokens ────────────────────────────────────────────────── */
+:root {
+  --bg: #1a1a1a;
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-hover: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.18);
+  --glass-blur: 24px;
+  --glass-shine: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.0) 40%,
+      rgba(255, 255, 255, 0.0) 60%,
+      rgba(255, 255, 255, 0.05) 100%);
+  --text-primary: rgba(255, 255, 255, 0.85);
+  --text-secondary: rgba(255, 255, 255, 0.45);
+  --text-dark: #0a0a0a;
+  --radius-glass: 24px;
+  --radius-pill: 50px;
+  --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --glow-color: rgba(120, 180, 255, 0.12);
+  --btn-stop-bg: rgba(255, 255, 255, 0.12);
+  --btn-stop-bg-hover: rgba(255, 255, 255, 0.18);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────── */
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Background is a solid dark grey — no animated orbs or gradients */
+
+/* ── Central Container ────────────────────────────────────────────── */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 680px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Title ────────────────────────────────────────────────────────── */
+.page-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  text-align: center;
+  text-shadow: 0 0 30px rgba(120, 180, 255, 0.15);
+}
+
+/* ── Liquid Glass Mixin (shared across glass elements) ────────────── */
+/* Applied via individual selectors below */
+
+/* ── Video Glass Card ─────────────────────────────────────────────── */
+.video-card {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-glass);
+  overflow: hidden;
+  position: relative;
+
+  /* Liquid Glass */
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.40),
+    0 0 80px rgba(80, 140, 240, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+/* Top-edge light reflection */
+.video-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.25) 30%,
+      rgba(255, 255, 255, 0.35) 50%,
+      rgba(255, 255, 255, 0.25) 70%,
+      transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Diagonal glass shine overlay */
+.video-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--glass-shine);
+  border-radius: var(--radius-glass);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.video-card:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.45),
+    0 0 100px rgba(80, 140, 240, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+  transform: translateY(-2px);
+}
+
+/* ── Feed Image ───────────────────────────────────────────────────── */
+.video-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-glass);
+}
+
+/* Hide broken-image icon / alt text when camera is off (no src) */
+.video-card img:not([src]) {
+  display: none;
+}
+
+/* ── Idle Placeholder (visible when stream is stopped) ────────────── */
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.placeholder-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.10);
+  position: relative;
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Simple camera lens ring using CSS */
+.placeholder-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  transform: translate(-50%, -50%);
+}
+
+.placeholder-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.18);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Hide placeholder when the stream is active */
+.video-card.active .video-placeholder {
+  display: none;
+}
+
+/* ── Button Row ───────────────────────────────────────────────────── */
+.btn-row {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    opacity var(--transition),
+    background var(--transition),
+    border-color var(--transition);
+  outline: none;
+}
+
+/* Glass shine on buttons */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.0) 50%);
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* ── Start Button — frosted white glass ───────────────────────────── */
+.btn-start {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text-dark);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 4px 20px rgba(255, 255, 255, 0.08),
+    0 0 40px rgba(120, 180, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn-start:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow:
+    0 6px 28px rgba(255, 255, 255, 0.14),
+    0 0 50px rgba(120, 180, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-start:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Stop Button — off-white / slightly translucent ───────────────── */
+.btn-stop {
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text-dark);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30);
+}
+
+.btn-stop:hover {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.40);
+  transform: translateY(-1px);
+}
+
+.btn-stop:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+.footer {
+  margin-top: 8px;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.16);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  body {
+    padding: 24px 12px;
+  }
+
+  .btn-row {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .btn {
+    padding: 15px 0;
+  }
+}

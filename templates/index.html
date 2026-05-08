@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Real-time Face Mask Detection powered by EfficientNetB0 and OpenCV" />
+  <title>Face Mask Detection</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Title -->
+  <h1 class="page-title">Face Mask Detection</h1>
+
+  <!-- Video Feed — Glassmorphism Card -->
+  <div class="video-card" id="videoCard">
+    <img id="videoFeed" alt="Live webcam feed" />
+    <div class="video-placeholder" id="videoPlaceholder">
+      <div class="placeholder-icon"></div>
+      <span class="placeholder-text">Camera is off</span>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="btn-row">
+    <button class="btn btn-start" id="btnStart" type="button">
+      Start Detection
+    </button>
+    <button class="btn btn-stop" id="btnStop" type="button" disabled>
+      Stop Detection
+    </button>
+  </div>
+
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CLIENT-SIDE JS — Start / Stop stream controls
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+  const btnStart      = document.getElementById('btnStart');
+  const btnStop       = document.getElementById('btnStop');
+  const videoFeed     = document.getElementById('videoFeed');
+  const videoCard     = document.getElementById('videoCard');
+  const placeholder   = document.getElementById('videoPlaceholder');
+
+  /**
+   * Start Detection — tell Flask to open the webcam, then point the
+   * <img> src at the MJPEG endpoint.
+   */
+  btnStart.addEventListener('click', async () => {
+    btnStart.disabled = true;
+    btnStart.textContent = 'Starting\u2026';
+
+    try {
+      const res = await fetch('/start_feed', { method: 'POST' });
+      const data = await res.json();
+
+      if (data.status === 'started') {
+        // Point src to the stream — browser handles MJPEG natively
+        videoFeed.src = '/video_feed?' + Date.now();
+        videoCard.classList.add('active');
+        btnStop.disabled = false;
+        btnStart.textContent = 'Running';
+      } else {
+        btnStart.disabled = false;
+        btnStart.textContent = 'Start Detection';
+        alert('Could not access the webcam. Check permissions.');
+      }
+    } catch (err) {
+      btnStart.disabled = false;
+      btnStart.textContent = 'Start Detection';
+      console.error('Start error:', err);
+    }
+  });
+
+  /**
+   * Stop Detection — tell Flask to release the webcam, then clear
+   * the <img> so the glass card returns to its idle state.
+   */
+  btnStop.addEventListener('click', async () => {
+    btnStop.disabled = true;
+
+    try {
+      await fetch('/stop_feed', { method: 'POST' });
+    } catch (err) {
+      console.error('Stop error:', err);
+    }
+
+    // Clear the stream
+    videoFeed.removeAttribute('src');
+    videoCard.classList.remove('active');
+    btnStart.disabled = false;
+    btnStart.textContent = 'Start Detection';
+  });
+</script>
+
+</body>
+</html>

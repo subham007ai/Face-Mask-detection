@@ -1,0 +1,8 @@
+flask>=3.0
+opencv-python>=4.8
+numpy>=1.24
+# ─────────────────────────────────────────────────────────
+# [ML HOOK] Uncomment the lines below once the model is ready
+tensorflow>=2.15
+keras>=3.0
+# ─────────────────────────────────────────────────────────
