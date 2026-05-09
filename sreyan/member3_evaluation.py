@@ -1,6 +1,10 @@
 import json
 import os
+import sys
 from pathlib import Path
+
+# Fix Windows terminal encoding for special characters
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,7 +25,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # Setup paths
 ROOT = Path(__file__).parent.parent.resolve()
 DATA_ROOT = ROOT / "data" / "test"
-MODEL_DIR = ROOT / "model_h5"
+MODEL_DIR = ROOT / "avijit_task"
 SREYAN_DIR = ROOT / "sreyan"
 
 # Ensure the Sreyan directory exists
@@ -32,7 +36,7 @@ BATCH_SIZE = 32
 
 def main():
     print("=" * 60)
-    print("🔍 INITIATING MEMBER 3 EVALUATION PIPELINE (MULTI-MODEL)")
+    print("[*] INITIATING MEMBER 3 EVALUATION PIPELINE (MULTI-MODEL)")
     print("=" * 60)
 
     # Find all models in the model_h5 directory
@@ -158,7 +162,7 @@ def main():
     print(f"[*] Saved all metrics to {report_path}")
 
     print("=" * 60)
-    print("✅ MULTI-MODEL EVALUATION PIPELINE COMPLETED SUCCESSFULLY")
+    print("[DONE] MULTI-MODEL EVALUATION PIPELINE COMPLETED SUCCESSFULLY")
     print("=" * 60)
 
 if __name__ == "__main__":

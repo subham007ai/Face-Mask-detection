@@ -1,61 +1,152 @@
 # How to Run the Face Mask Detection App
 
-This project uses a unified architecture where **Flask serves both the backend ML logic and the frontend UI** at the same time. You do not need to run a separate frontend server (like Node.js or React). 
+This project uses a unified architecture where **Flask serves both the backend ML logic and the frontend UI** at the same time. You do not need to run a separate frontend server.
 
-Here are the step-by-step instructions to get the application running locally.
+---
 
 ## 1. Prerequisites
 
-Make sure you have Python installed. The project is currently configured to use a virtual environment located in the `venv_new` (or `venv`) directory.
+- Python **3.9 – 3.13** installed
+- Git (with Git LFS for image dataset)
+- A webcam
 
-## 2. Activate the Virtual Environment
+---
 
-Before running the application or installing dependencies, activate the virtual environment:
+## 2. Clone the Repository
 
-**On macOS / Linux:**
 ```bash
-source venv_new/bin/activate
+git clone https://github.com/subham007ai/Face-Mask-detection.git
+cd Face-Mask-detection
 ```
+
+> **Note:** This repo uses **Git LFS** for the image dataset. If images appear as pointer files, run:
+> ```bash
+> git lfs pull
+> ```
+
+---
+
+## 3. Place the Trained Model
+
+The trained model file (`mask_model_EfficientNetB0.h5`) is **not stored in this repository** due to its size (~47 MB after compression). You must obtain it separately from the project team and place it here:
+
+```
+avijit_task/mask_model_EfficientNetB0.h5
+```
+
+> The app will print a clear error message and exit gracefully if the file is missing.
+
+---
+
+## 4. Create & Activate a Virtual Environment
 
 **On Windows:**
 ```cmd
+python -m venv venv_new
 .\venv_new\Scripts\activate
 ```
 
-## 3. Install Dependencies
+**On macOS / Linux:**
+```bash
+python -m venv venv_new
+source venv_new/bin/activate
+```
 
-Once the virtual environment is active, install all required packages:
+---
+
+## 5. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-> **Note for Python 3.14+ users:** If you face issues installing `tensorflow` natively via the requirements file, you may need to install the nightly build of TensorFlow to ensure compatibility:
+> **Python 3.14+ users:** If TensorFlow fails to install, try:
 > ```bash
 > pip install tf-nightly tf-keras
 > ```
 
-## 4. Run the Application
+---
 
-Start the Flask server, which will initialize the deep learning model and start serving the web pages:
+## 6. Run the Application
 
 ```bash
 python app.py
 ```
 
-You should see output indicating the model is loading, followed by:
-```text
-  Face Mask Detection Server
+You should see:
+```
+[INFO] Loading model from avijit_task/mask_model_EfficientNetB0.h5 …
+[INFO] Model loaded successfully.
+
+  Face Mask Detection Server  [CPU-Optimised]
   Open  http://localhost:5001  in your browser.
 ```
 
-## 5. View the App (Frontend)
+---
 
-1. Open your web browser (Chrome, Edge, Safari, etc.).
-2. Navigate to **http://localhost:5001**.
-3. Click the **"Start Detection"** button on the UI.
-4. Your browser may prompt you for **Camera Permissions**—make sure to allow it so the OpenCV backend can access your webcam feed.
+## 7. Use the App
+
+1. Open **http://localhost:5001** in your browser (Chrome / Edge recommended)
+2. Click **"Start Detection"**
+3. Allow **camera permissions** when prompted
+4. The app will detect faces in real-time and classify them as **Mask** or **No Mask**
+
+---
+
+## Performance Notes
+
+The app runs on **CPU** (TensorFlow ≥ 2.11 does not support native Windows GPU). Several optimisations are built in to keep it smooth:
+
+| Optimisation | Detail |
+|---|---|
+| Frame skipping | ML inference runs every 3rd frame |
+| Async inference thread | Camera stream never blocks on `predict()` |
+| Haar detection at 0.5× scale | Faster face detection |
+| Reduced capture resolution | 480 × 360 px |
+| Strict false-positive filtering | `minNeighbors=9`, aspect ratio check, 65% confidence threshold |
+
+> **GPU users (RTX / GTX):** For GPU acceleration on Windows, install Python 3.11 and then:
+> ```bash
+> pip install tensorflow-cpu==2.13.0 tensorflow-directml-plugin
+> ```
+
+---
 
 ## Troubleshooting
-- **Address already in use:** If port `5001` is taken, you can change the port number at the very bottom of `app.py` in the `app.run(..., port=5001)` line.
-- **Camera not turning on:** Ensure no other application (like Zoom or Teams) is actively using your camera, as OpenCV requires exclusive access to the webcam hardware.
+
+| Problem | Solution |
+|---|---|
+| `Address already in use` | Change port at bottom of `app.py`: `app.run(..., port=5002)` |
+| Camera not turning on | Close Zoom / Teams / any app using the webcam |
+| Hand detected as Mask | Already fixed — strict filtering is active. Ensure good lighting |
+| Model load error | Confirm `mask_model_EfficientNetB0.h5` is in `avijit_task/` |
+| TensorFlow import error | Run `pip install tensorflow>=2.15 keras>=3.0` |
+
+---
+
+## Running the Evaluation Pipeline (Team Members)
+
+To regenerate real ROC / PR curves and metrics from the trained models:
+
+```bash
+python sreyan/member3_evaluation.py
+```
+
+Outputs saved to `sreyan/`:
+- `roc_curve_comparison.png`
+- `pr_curve_comparison.png`
+- `all_models_evaluation_metrics.json`
+
+---
+
+## Project Team
+
+| Member | Contribution |
+|---|---|
+| **Subham** | Data pipeline, EDA, preprocessing, project setup, web app |
+| **Avijit** | Steps 6–13: preprocessing → training → evaluation pipeline |
+| **Sreyan** | Model evaluation, ROC/PR curve generation |
+
+---
+
+*4th Semester Academic Project — Face Mask Detection using Deep Learning*

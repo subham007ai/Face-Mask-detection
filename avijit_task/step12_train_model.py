@@ -35,14 +35,25 @@ ARCHITECTURES = {
 }
 
 def build_model(architecture_name: str) -> Model:
-    """Construct model with custom classification head."""
+    """Construct model with custom classification head.
+
+    Transfer learning strategy:
+    - Base (ImageNet weights) is FROZEN — only the custom head trains.
+    - This preserves learned low-level features and prevents overfitting
+      on a small dataset. Unfreeze base layers in a second fine-tuning
+      pass once the head has converged.
+    """
     inputs = Input(shape=(*IMAGE_SIZE, 3))
-    
+
     # Get the base model class from the dictionary
     base_model_class = ARCHITECTURES[architecture_name]
-    
+
     # Initialize base model with ImageNet weights
     base = base_model_class(include_top=False, weights="imagenet", input_tensor=inputs)
+
+    # ── Freeze all base layers (transfer learning phase 1) ───────────
+    base.trainable = False
+    print(f"[INFO] {architecture_name} base frozen — {len(base.layers)} layers locked.")
 
     x = GlobalAveragePooling2D()(base.output)
     x = Dropout(0.5)(x)

@@ -19,7 +19,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 ROOT = Path(__file__).parent.resolve()
-DATA_ROOT = ROOT / "data"
+DATA_ROOT = ROOT.parent / "data"
 REPORT_PATH = ROOT / "reports" / "step10_validation_split_report.json"
 
 IMAGE_SIZE = (224, 224)
@@ -30,16 +30,13 @@ VALIDATION_SPLIT = 0.15
 
 def build_generators():
     """Build train, validation, and test generators."""
+    # Both train and val MUST use the same datagen instance so the
+    # 85/15 split is coordinated and images don't appear in both sets.
     train_datagen = ImageDataGenerator(
         rescale=1.0 / 255.0,
         rotation_range=20,
         zoom_range=0.15,
         horizontal_flip=True,
-        validation_split=VALIDATION_SPLIT,
-    )
-
-    val_datagen = ImageDataGenerator(
-        rescale=1.0 / 255.0,
         validation_split=VALIDATION_SPLIT,
     )
 
@@ -55,7 +52,8 @@ def build_generators():
         seed=SEED,
     )
 
-    val_data = val_datagen.flow_from_directory(
+    # Use the SAME train_datagen (not a new object) for validation subset
+    val_data = train_datagen.flow_from_directory(
         directory=str(DATA_ROOT / "train"),
         target_size=IMAGE_SIZE,
         batch_size=BATCH_SIZE,

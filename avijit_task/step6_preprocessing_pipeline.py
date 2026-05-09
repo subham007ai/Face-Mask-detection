@@ -25,7 +25,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
 ROOT = Path(__file__).parent.resolve()
-DATA_ROOT = ROOT / "data"
+DATA_ROOT = ROOT.parent / "data"
 REPORT_PATH = ROOT / "reports" / "step6_pipeline_report.json"
 PREVIEW_PATH = ROOT / "reports" / "step6_preview.png"
 
