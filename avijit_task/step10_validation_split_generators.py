@@ -1,4 +1,4 @@
-"""Step 10 validation-aware generator setup.
+﻿"""Step 10 validation-aware generator setup.
 
 This adds a validation split from the training data only.
 
@@ -30,8 +30,6 @@ VALIDATION_SPLIT = 0.15
 
 def build_generators():
     """Build train, validation, and test generators."""
-    # Both train and val MUST use the same datagen instance so the
-    # 85/15 split is coordinated and images don't appear in both sets.
     train_datagen = ImageDataGenerator(
         rescale=1.0 / 255.0,
         rotation_range=20,
@@ -52,7 +50,6 @@ def build_generators():
         seed=SEED,
     )
 
-    # Use the SAME train_datagen (not a new object) for validation subset
     val_data = train_datagen.flow_from_directory(
         directory=str(DATA_ROOT / "train"),
         target_size=IMAGE_SIZE,

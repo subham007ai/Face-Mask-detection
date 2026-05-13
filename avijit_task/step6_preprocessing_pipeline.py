@@ -1,4 +1,4 @@
-"""Step 6 preprocessing pipeline for the face mask dataset.
+﻿"""Step 6 preprocessing pipeline for the face mask dataset.
 
 This module keeps the split data on disk unchanged and provides
 framework-agnostic preprocessing utilities for downstream training.
@@ -81,7 +81,6 @@ def _zoom_image(image: Image.Image, zoom: float) -> Image.Image:
         top = max(0, (new_h - height) // 2)
         return enlarged.crop((left, top, left + width, top + height))
 
-    # zoom < 1.0
     new_w = max(1, int(round(width * zoom)))
     new_h = max(1, int(round(height * zoom)))
     shrunk = image.resize((new_w, new_h), Image.Resampling.LANCZOS)
@@ -190,7 +189,6 @@ def create_preview() -> None:
     train_samples = list_samples("train")
     test_samples = list_samples("test")
 
-    # Keep the preview small but representative.
     train_pick = rng.sample(train_samples, 4)
     test_pick = rng.sample(test_samples, 4)
     rows = [("train", path, label) for path, label in train_pick] + [

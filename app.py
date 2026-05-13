@@ -1,4 +1,4 @@
-"""
+﻿"""
 Face Mask Detection — Flask + OpenCV Backend  (CPU-Optimised Build)
 ====================================================================
 Real-time webcam streaming server with EfficientNetB0 inference.
@@ -32,23 +32,18 @@ from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
 
-# ── Performance knobs ────────────────────────────────────────────────
-INFERENCE_EVERY_N  = 3      # run ML every Nth frame (1 = every frame, slower)
-JPEG_QUALITY       = 70     # stream compression (lower = faster encode)
-CAM_WIDTH          = 480    # webcam capture width  (lower = less CPU)
-CAM_HEIGHT         = 360    # webcam capture height
+INFERENCE_EVERY_N  = 3
+JPEG_QUALITY       = 70
+CAM_WIDTH          = 480
+CAM_HEIGHT         = 360
 
-# ── Detection quality filters ────────────────────────────────────────
-HAAR_MIN_NEIGHBORS = 9      # higher = stricter face detection (fewer false hits)
-                            # 5 catches hands; 9 requires a real face structure
-MIN_CONFIDENCE     = 0.65   # ignore predictions below 65% confidence
-FACE_ASPECT_RATIO  = (0.6, 1.5)  # valid w/h range for a face (hands fall outside)
+HAAR_MIN_NEIGHBORS = 5
+MIN_CONFIDENCE     = 0.50
+FACE_ASPECT_RATIO  = (0.6, 1.5)
 
-# ── Haar Cascade for face detection (ships with OpenCV) ──────────────
 FACE_CASCADE_PATH = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH)
 
-# ── Load trained EfficientNetB0 mask detector ────────────────────────
 MODEL_PATH   = "avijit_task/mask_model_EfficientNetB0.h5"
 CLASS_LABELS = ["Mask", "No Mask"]
 
@@ -65,20 +60,13 @@ except Exception as e:
     model = None
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  ASYNC INFERENCE ENGINE
-#  The ML model lives in its own thread.  The camera loop deposits a
-#  frame into `_pending_frame`; the inference thread picks it up,
-#  runs predict(), and writes results into `_last_detections`.
-#  All communication is lock-protected.
-# ─────────────────────────────────────────────────────────────────────
 class InferenceEngine:
     """Decouples slow ML inference from the fast camera-read loop."""
 
     def __init__(self):
         self._lock           = threading.Lock()
-        self._pending_frame  = None   # frame waiting to be inferred
-        self._last_detections = []    # [(x,y,w,h,label,confidence,color), …]
+        self._pending_frame  = None
+        self._last_detections = []
         self._running        = False
         self._thread         = None
 
@@ -102,7 +90,6 @@ class InferenceEngine:
         with self._lock:
             return list(self._last_detections)
 
-    # ── Internal worker ──────────────────────────────────────────────
     def _worker(self):
         while self._running:
             frame = None
@@ -112,7 +99,7 @@ class InferenceEngine:
                     self._pending_frame = None
 
             if frame is None:
-                time.sleep(0.005)   # nothing to do — yield CPU briefly
+                time.sleep(0.005)
                 continue
 
             detections = self._run_inference(frame)
@@ -123,7 +110,6 @@ class InferenceEngine:
         """Run face detection + mask classification on one frame."""
         detections = []
 
-        # ── Scale frame down for faster Haar detection ───────────────
         scale      = 0.5
         small      = cv2.resize(frame, (0, 0), fx=scale, fy=scale)
         gray_small = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
@@ -131,22 +117,18 @@ class InferenceEngine:
         faces_small = face_cascade.detectMultiScale(
             gray_small,
             scaleFactor=1.1,
-            minNeighbors=HAAR_MIN_NEIGHBORS,   # stricter — filters out hands
+            minNeighbors=HAAR_MIN_NEIGHBORS,
             minSize=(30, 30),
             flags=cv2.CASCADE_SCALE_IMAGE,
         )
 
         for (sx, sy, sw, sh) in faces_small:
-            # Scale box back to original frame coordinates
             x, y, w, h = (int(v / scale) for v in (sx, sy, sw, sh))
 
-            # ── Aspect ratio guard ───────────────────────────────────
-            # Real faces are roughly square. Hands, arms etc. are not.
             aspect = w / h if h > 0 else 0
             if not (FACE_ASPECT_RATIO[0] <= aspect <= FACE_ASPECT_RATIO[1]):
-                continue   # skip — not shaped like a face
+                continue
 
-            # Clamp to frame boundaries
             fh, fw = frame.shape[:2]
             x1, y1 = max(0, x), max(0, y)
             x2, y2 = min(fw, x + w), min(fh, y + h)
@@ -155,23 +137,22 @@ class InferenceEngine:
 
             roi     = frame[y1:y2, x1:x2]
             resized = cv2.resize(roi, (224, 224))
-            arr     = resized.astype("float32") / 255.0
-            arr     = np.expand_dims(arr, axis=0)   # (1,224,224,3)
+            resized_rgb = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
+            arr     = resized_rgb.astype("float32") / 255.0
+            arr     = np.expand_dims(arr, axis=0)
 
             if model is not None:
                 pred = model.predict(arr, verbose=0)[0][0]
             else:
-                pred = 0.0
+                pred = 0.5
 
             if pred > 0.5:
                 label, confidence, color = "No Mask", float(pred), (0, 70, 255)
             else:
-                label, confidence, color = "Mask", 1.0 - float(pred), (0, 200, 100)
+                label, confidence, color = "Mask", float(1.0 - pred), (0, 200, 100)
 
-            # ── Confidence threshold guard ───────────────────────────
-            # Skip uncertain predictions (e.g. hand partially covering face)
             if confidence < MIN_CONFIDENCE:
-                continue   # model isn't sure — don't show anything
+                continue
 
             detections.append((x, y, w, h, label, confidence, color))
 
@@ -181,9 +162,6 @@ class InferenceEngine:
 inference_engine = InferenceEngine()
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  THREAD-SAFE CAMERA MANAGER
-# ─────────────────────────────────────────────────────────────────────
 class CameraManager:
     """Thread-safe singleton that controls the webcam lifecycle."""
 
@@ -204,7 +182,6 @@ class CameraManager:
             self._cap = cv2.VideoCapture(0)
             self._cap.set(cv2.CAP_PROP_FRAME_WIDTH,  CAM_WIDTH)
             self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT)
-            # Reduce internal buffer to minimise latency
             self._cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
             if not self._cap.isOpened():
                 print("[ERROR] Cannot open webcam.")
@@ -232,16 +209,11 @@ class CameraManager:
 camera = CameraManager()
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  DRAW DETECTIONS — overlay boxes on any frame
-# ─────────────────────────────────────────────────────────────────────
 def draw_detections(frame, detections):
     """Stamp cached detection results onto the current frame."""
     for (x, y, w, h, label, confidence, color) in detections:
-        # Bounding box
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
 
-        # Label background
         text = f"{label}  {confidence * 100:.0f}%"
         (tw, th), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.55, 2)
         cv2.rectangle(frame, (x, y - th - 14), (x + tw + 10, y), color, -1)
@@ -250,7 +222,6 @@ def draw_detections(frame, detections):
             cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255, 255, 255), 2,
         )
 
-        # Confidence bar
         bar_w = int(w * confidence)
         cv2.rectangle(frame, (x, y + h + 4), (x + bar_w, y + h + 12), color, -1)
         cv2.rectangle(frame, (x, y + h + 4), (x + w,     y + h + 12), (80, 80, 80), 1)
@@ -258,9 +229,6 @@ def draw_detections(frame, detections):
     return frame
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  VIDEO GENERATOR — yields JPEG frames for MJPEG streaming
-# ─────────────────────────────────────────────────────────────────────
 def generate_frames():
     """
     Camera loop:
@@ -275,17 +243,14 @@ def generate_frames():
         if not success:
             break
 
-        # ── Submit to inference engine every N frames ────────────────
         if frame_idx % INFERENCE_EVERY_N == 0:
             inference_engine.submit(frame)
 
         frame_idx += 1
 
-        # ── Overlay cached detections (always, even on skipped frames) ──
         detections = inference_engine.get_detections()
         frame = draw_detections(frame, detections)
 
-        # ── Encode → JPEG ────────────────────────────────────────────
         _, buffer = cv2.imencode(
             ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, JPEG_QUALITY]
         )
@@ -295,9 +260,6 @@ def generate_frames():
         )
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  FLASK ROUTES
-# ─────────────────────────────────────────────────────────────────────
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -323,7 +285,6 @@ def stop_feed():
     return jsonify({"status": "stopped"})
 
 
-# ─────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print("\n  Face Mask Detection Server  [CPU-Optimised]")
     print("  Open  http://localhost:5001  in your browser.\n")

@@ -45,13 +45,10 @@ def build_model(architecture_name: str) -> Model:
     """
     inputs = Input(shape=(*IMAGE_SIZE, 3))
 
-    # Get the base model class from the dictionary
     base_model_class = ARCHITECTURES[architecture_name]
 
-    # Initialize base model with ImageNet weights
     base = base_model_class(include_top=False, weights="imagenet", input_tensor=inputs)
 
-    # ── Freeze all base layers (transfer learning phase 1) ───────────
     base.trainable = False
     print(f"[INFO] {architecture_name} base frozen — {len(base.layers)} layers locked.")
 
@@ -124,10 +121,9 @@ def main() -> None:
 
     for arch_name in ARCHITECTURES.keys():
         print(f"\n{'='*50}")
-        print(f"🚀 STARTING TRAINING FOR: {arch_name}")
+        print(f"STARTING TRAINING FOR: {arch_name}")
         print(f"{'='*50}\n")
         
-        # Clear session to free up memory from previous runs
         tf.keras.backend.clear_session()
         
         model = build_model(arch_name)
@@ -146,7 +142,7 @@ def main() -> None:
         report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
         print(f"REPORT={report_path}")
 
-    print("\n✅ All 3 models trained successfully!")
+    print("\nAll 3 models trained successfully!")
 
 if __name__ == "__main__":
     main()

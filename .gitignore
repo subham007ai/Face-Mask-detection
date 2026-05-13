@@ -36,3 +36,8 @@ build/
 # Models & Large Data
 *.zip
 
+# Submission script and AI-flagged docs
+prepare_submission.ps1
+detailed_steps_explanation.md
+flaws_analysis.md
+

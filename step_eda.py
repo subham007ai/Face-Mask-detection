@@ -1,4 +1,4 @@
-"""Exploratory Data Analysis for the face mask dataset.
+﻿"""Exploratory Data Analysis for the face mask dataset.
 
 This script analyses the final prepared dataset (data/train and data/test)
 and produces a multi-panel PDF report plus a JSON summary.
@@ -32,10 +32,6 @@ import numpy as np
 from PIL import Image
 
 
-# ---------------------------------------------------------------------------
-# Paths and constants
-# ---------------------------------------------------------------------------
-
 ROOT      = Path(r"D:\4thSemproject")
 DATA_ROOT = ROOT / "data"
 REPORT_DIR = ROOT / "reports"
@@ -45,17 +41,13 @@ CLASSES    = ("WithMask", "WithoutMask")
 SPLITS     = ("train", "test")
 SEED       = 20260501
 
-# Matplotlib palette (calm, professional)
 PALETTE = {
-    "WithMask":    "#2EB872",   # teal-green
-    "WithoutMask": "#E05A5A",   # muted red
+    "WithMask":    "#2EB872",
+    "WithoutMask": "#E05A5A",
 }
 
 FIGURE_DPI = 140
 
-# ---------------------------------------------------------------------------
-# Data helpers
-# ---------------------------------------------------------------------------
 
 def list_samples(split: str) -> List[Tuple[Path, str]]:
     """Return (path, label) pairs for a split in deterministic order."""
@@ -84,10 +76,6 @@ def laplacian_blur_score(path: Path) -> float:
     return float(cv2.Laplacian(img, cv2.CV_64F).var())
 
 
-# ---------------------------------------------------------------------------
-# Analysis collectors
-# ---------------------------------------------------------------------------
-
 def collect_all(
     samples: List[Tuple[Path, str]],
     sample_limit: int = 5000,
@@ -99,7 +87,6 @@ def collect_all(
     """
     rng = random.Random(SEED)
 
-    # Stratified sub-sample per class
     by_class: Dict[str, List[Path]] = {c: [] for c in CLASSES}
     for path, label in samples:
         by_class[label].append(path)
@@ -114,7 +101,7 @@ def collect_all(
 
     widths:  Dict[str, List[int]]   = {c: [] for c in CLASSES}
     heights: Dict[str, List[int]]   = {c: [] for c in CLASSES}
-    means:   Dict[str, List[float]] = {c: [] for c in CLASSES}  # per-image mean across channels
+    means:   Dict[str, List[float]] = {c: [] for c in CLASSES}
     stds:    Dict[str, List[float]] = {c: [] for c in CLASSES}
     ch_means: Dict[str, Dict[str, List[float]]] = {
         c: {"R": [], "G": [], "B": []} for c in CLASSES
@@ -134,7 +121,7 @@ def collect_all(
         widths[label].append(w)
         heights[label].append(h)
 
-        arr = np.asarray(img, dtype=np.float32) / 255.0  # H×W×3
+        arr = np.asarray(img, dtype=np.float32) / 255.0
         means[label].append(float(arr.mean()))
         stds[label].append(float(arr.std()))
         for ci, ch in enumerate(["R", "G", "B"]):
@@ -152,10 +139,6 @@ def collect_all(
         "sampled": {label: len(widths[label]) for label in CLASSES},
     }
 
-
-# ---------------------------------------------------------------------------
-# Figure 1 – Class distribution
-# ---------------------------------------------------------------------------
 
 def fig_class_distribution(all_splits: Dict[str, List[Tuple[Path, str]]]) -> Path:
     """Bar chart of per-class counts for train and test splits."""
@@ -192,15 +175,11 @@ def fig_class_distribution(all_splits: Dict[str, List[Tuple[Path, str]]]) -> Pat
     return out
 
 
-# ---------------------------------------------------------------------------
-# Figure 2 – Sample image grid
-# ---------------------------------------------------------------------------
-
 def fig_sample_grid(all_splits: Dict[str, List[Tuple[Path, str]]]) -> Path:
     """5x4 grid: 5 images per class x 2 classes x 2 splits (train + test)."""
     rng = random.Random(SEED + 1)
     N_COLS = 5
-    THUMB = 112  # px thumbnail size
+    THUMB = 112
 
     rows: List[Tuple[str, str, List[Path]]] = []
     for split in SPLITS:
@@ -243,10 +222,6 @@ def fig_sample_grid(all_splits: Dict[str, List[Tuple[Path, str]]]) -> Path:
     return out
 
 
-# ---------------------------------------------------------------------------
-# Figure 3 – Resolution histograms (width & height)
-# ---------------------------------------------------------------------------
-
 def fig_resolution(collected: Dict) -> Path:
     """Overlapping histograms of original image width and height per class."""
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.5), dpi=FIGURE_DPI)
@@ -278,10 +253,6 @@ def fig_resolution(collected: Dict) -> Path:
     print(f"  saved -> {out.name}")
     return out
 
-
-# ---------------------------------------------------------------------------
-# Figure 4 – Pixel channel statistics
-# ---------------------------------------------------------------------------
 
 def fig_channel_stats(collected: Dict) -> Path:
     """Grouped bar chart of per-channel mean (R/G/B) for each class."""
@@ -336,15 +307,11 @@ def fig_channel_stats(collected: Dict) -> Path:
     return out
 
 
-# ---------------------------------------------------------------------------
-# Figure 5 – Blur score distribution
-# ---------------------------------------------------------------------------
-
 def fig_blur(collected: Dict) -> Path:
     """Histogram + box plot of Laplacian blur variance per class,
     with a vertical reference line at the Step-3 quality threshold (var=65).
     """
-    BLUR_THRESHOLD = 65  # Step 3 quality filter: images below this were removed
+    BLUR_THRESHOLD = 65
 
     fig, axes = plt.subplots(1, 2, figsize=(11, 5), dpi=FIGURE_DPI)
     fig.suptitle(
@@ -352,19 +319,16 @@ def fig_blur(collected: Dict) -> Path:
         fontsize=12, fontweight="bold", y=1.01,
     )
 
-    # --- left: overlapping histograms ---
     ax = axes[0]
     for cls in CLASSES:
         vals = collected["blurs"][cls]
         if not vals:
             continue
-        # cap extreme outliers for readability
         cap = np.percentile(vals, 98)
         capped = [min(v, cap) for v in vals]
         ax.hist(capped, bins=60, alpha=0.60, color=PALETTE[cls],
                 label=f"{cls}  (mean={np.mean(vals):.1f})", edgecolor="none")
 
-    # Step 3 quality threshold
     ax.axvline(
         x=BLUR_THRESHOLD, color="#e53935", linewidth=1.6,
         linestyle="--", zorder=5,
@@ -386,7 +350,6 @@ def fig_blur(collected: Dict) -> Path:
     ax.yaxis.grid(True, linestyle="--", alpha=0.35)
     ax.set_axisbelow(True)
 
-    # --- right: box plot ---
     ax = axes[1]
     data_to_plot = [collected["blurs"][cls] for cls in CLASSES]
     bp = ax.boxplot(
@@ -400,7 +363,6 @@ def fig_blur(collected: Dict) -> Path:
     for patch, cls in zip(bp["boxes"], CLASSES):
         patch.set_facecolor(PALETTE[cls])
         patch.set_alpha(0.75)
-    # threshold reference on box plot
     ax.axhline(
         y=BLUR_THRESHOLD, color="#e53935", linewidth=1.4,
         linestyle="--", zorder=5, label=f"Threshold (var={BLUR_THRESHOLD})",
@@ -421,10 +383,6 @@ def fig_blur(collected: Dict) -> Path:
     print(f"  saved -> {out.name}")
     return out
 
-
-# ---------------------------------------------------------------------------
-# JSON report
-# ---------------------------------------------------------------------------
 
 def build_json_report(
     all_splits: Dict[str, List[Tuple[Path, str]]],
@@ -479,10 +437,6 @@ def build_json_report(
     return report
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-
 def main() -> None:
     t0 = time.perf_counter()
 
@@ -492,7 +446,6 @@ def main() -> None:
 
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # ── 0. Load file lists ──────────────────────────────────────────
     print("\n[0] Loading file lists ...")
     all_splits: Dict[str, List[Tuple[Path, str]]] = {}
     for split in SPLITS:
@@ -502,24 +455,19 @@ def main() -> None:
             n = sum(1 for _, l in samples if l == cls)
             print(f"    {split}/{cls}: {n:,} images")
 
-    # ── 1. Class distribution ───────────────────────────────────────
     print("\n[1] Class distribution ...")
     f1 = fig_class_distribution(all_splits)
 
-    # ── 2. Sample grid ──────────────────────────────────────────────
     print("\n[2] Sample image grid ...")
     f2 = fig_sample_grid(all_splits)
 
-    # ── 3–5. Pixel-level stats (train) ─────────────────────────────
     print("\n[3-5] Collecting pixel stats for train split ...")
     train_collected = collect_all(all_splits["train"])
 
     print("\n[3-5] Collecting pixel stats for test split ...")
     test_collected = collect_all(all_splits["test"])
 
-    # ── 3. Resolution ───────────────────────────────────────────────
     print("\n[3] Resolution histograms ...")
-    # Merge train + test for the resolution figure (train dominates visually)
     merged_res = {
         key: {
             cls: train_collected[key][cls] + test_collected[key][cls]
@@ -527,19 +475,15 @@ def main() -> None:
         }
         for key in ("widths", "heights")
     }
-    # re-use the same structure collect_all returns
     merged_for_res = {**train_collected, "widths": merged_res["widths"], "heights": merged_res["heights"]}
     f3 = fig_resolution(merged_for_res)
 
-    # ── 4. Channel stats ────────────────────────────────────────────
     print("\n[4] Channel statistics (train) ...")
     f4 = fig_channel_stats(train_collected)
 
-    # ── 5. Blur distribution ────────────────────────────────────────
     print("\n[5] Blur score distribution (train) ...")
     f5 = fig_blur(train_collected)
 
-    # ── JSON report ─────────────────────────────────────────────────
     elapsed = time.perf_counter() - t0
     figures = [f1, f2, f3, f4, f5]
     report = build_json_report(all_splits, train_collected, test_collected, figures, elapsed)

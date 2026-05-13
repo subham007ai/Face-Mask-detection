@@ -1,0 +1,57 @@
+Face Mask Detection - How to Run
+=================================
+
+Requirements
+------------
+Python 3.9 or 3.10 recommended.
+
+Install all dependencies by running:
+    pip install -r requirements.txt
+
+If you get a TensorFlow error on Windows, try:
+    pip install tensorflow==2.12.0
+
+
+Running the Web App
+-------------------
+1. Make sure the model file is present at:
+       avijit_task/mask_model_EfficientNetB0.h5
+
+2. Run the Flask server:
+       python app.py
+
+3. Open your browser and go to:
+       http://localhost:5001
+
+4. Click "Start Camera" to begin real-time face mask detection.
+   Allow browser access to your webcam when prompted.
+
+5. Press Ctrl+C in the terminal to stop the server.
+
+
+Running the EDA Script
+----------------------
+    python step_eda.py
+
+This will generate charts in the reports/ folder.
+
+
+Running Training (optional - models already included)
+------------------------------------------------------
+    cd avijit_task
+    python step12_train_model.py
+
+Training takes a long time depending on your GPU/CPU.
+The pre-trained .h5 model files are already included
+so you do NOT need to re-train.
+
+
+Project Structure
+-----------------
+app.py                  - Main Flask web application
+step_eda.py             - Exploratory data analysis
+avijit_task/            - Preprocessing, training and evaluation scripts
+sreyan/                 - Evaluation charts and metrics
+reports/                - Generated reports and EDA charts
+templates/              - HTML frontend
+static/                 - CSS styles

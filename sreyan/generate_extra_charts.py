@@ -1,4 +1,4 @@
-"""
+﻿"""
 Extra Charts Generator — Face Mask Detection Project
 =====================================================
 Generates 4 additional publication-quality charts from the real
@@ -21,11 +21,9 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 
-# ── Paths ────────────────────────────────────────────────────────────
 SREYAN_DIR  = Path(__file__).parent.resolve()
 METRICS_FILE = SREYAN_DIR / "all_models_evaluation_metrics.json"
 
-# ── Load real metrics ────────────────────────────────────────────────
 with open(METRICS_FILE) as f:
     data = json.load(f)
 
@@ -34,14 +32,12 @@ model_names = list(models_data.keys())
 METRIC_KEYS  = ["accuracy", "precision", "recall", "f1_score", "roc_auc"]
 METRIC_LABELS = ["Accuracy", "Precision", "Recall", "F1-Score", "ROC-AUC"]
 
-# Build a 2D array: rows=models, cols=metrics
 values = np.array([
     [models_data[m][k] for k in METRIC_KEYS]
     for m in model_names
 ])
 
-# ── Shared style ─────────────────────────────────────────────────────
-PALETTE    = ["#1565C0", "#E65100", "#2E7D32"]   # blue, orange, green
+PALETTE    = ["#1565C0", "#E65100", "#2E7D32"]
 BG_COLOR   = "#ffffff"
 GRID_COLOR = "#dddddd"
 TEXT_COLOR = "#1a1a1a"
@@ -58,11 +54,8 @@ plt.rcParams.update({
     "font.family":      "DejaVu Sans",
 })
 
-TEST_SIZE = 1726   # total test images
+TEST_SIZE = 1726
 
-# ─────────────────────────────────────────────────────────────────────
-#  CHART 1 — Grouped Bar Chart
-# ─────────────────────────────────────────────────────────────────────
 def plot_grouped_bar():
     fig, ax = plt.subplots(figsize=(13, 7), facecolor=BG_COLOR)
     ax.set_facecolor(BG_COLOR)
@@ -80,7 +73,6 @@ def plot_grouped_bar():
             color=color, alpha=0.88,
             label=model, zorder=3,
         )
-        # Value labels on top of each bar
         for bar in bars:
             h = bar.get_height()
             ax.text(
@@ -108,12 +100,9 @@ def plot_grouped_bar():
     print(f"[*] Saved: {out}")
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  CHART 2 — Radar / Spider Chart
-# ─────────────────────────────────────────────────────────────────────
 def plot_radar():
     angles = np.linspace(0, 2 * np.pi, len(METRIC_KEYS), endpoint=False).tolist()
-    angles += angles[:1]   # close the loop
+    angles += angles[:1]
 
     fig, ax = plt.subplots(
         figsize=(8, 8), subplot_kw={"polar": True}, facecolor=BG_COLOR,
@@ -122,7 +111,7 @@ def plot_radar():
     ax.spines["polar"].set_color(GRID_COLOR)
 
     for i, (model, color) in enumerate(zip(model_names, PALETTE)):
-        v = values[i].tolist() + [values[i][0]]   # close loop
+        v = values[i].tolist() + [values[i][0]]
         ax.plot(angles, v, color=color, linewidth=2, label=model)
         ax.fill(angles, v, color=color, alpha=0.12)
 
@@ -147,24 +136,18 @@ def plot_radar():
     print(f"[*] Saved: {out}")
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  CHART 3 — Metrics Heatmap
-# ─────────────────────────────────────────────────────────────────────
 def plot_heatmap():
     fig, ax = plt.subplots(figsize=(10, 4.5), facecolor=BG_COLOR)
     ax.set_facecolor(BG_COLOR)
 
-    # Normalise to 0–1 range clamped to [0.98, 1.0] for visual contrast
     vmin, vmax = 0.98, 1.001
     im = ax.imshow(values, cmap="YlGn", aspect="auto", vmin=vmin, vmax=vmax)
 
-    # Axis labels
     ax.set_xticks(range(len(METRIC_LABELS)))
     ax.set_xticklabels(METRIC_LABELS, fontsize=12)
     ax.set_yticks(range(len(model_names)))
     ax.set_yticklabels(model_names, fontsize=12)
 
-    # Cell annotations
     for row in range(len(model_names)):
         for col in range(len(METRIC_KEYS)):
             val = values[row, col]
@@ -191,19 +174,13 @@ def plot_heatmap():
     print(f"[*] Saved: {out}")
 
 
-# ─────────────────────────────────────────────────────────────────────
-#  CHART 4 — Error Analysis (Misclassification Count)
-# ─────────────────────────────────────────────────────────────────────
 def plot_error_analysis():
-    # Derive error counts from accuracy
-    # errors = (1 - accuracy) × total_images, rounded to nearest int
     errors = [round((1.0 - models_data[m]["accuracy"]) * TEST_SIZE)
               for m in model_names]
     correct = [TEST_SIZE - e for e in errors]
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 6), facecolor=BG_COLOR)
 
-    # ── Left: stacked bar ──────────────────────────────────────────
     ax = axes[0]
     ax.set_facecolor(BG_COLOR)
     x = np.arange(len(model_names))
@@ -231,7 +208,6 @@ def plot_error_analysis():
     ax.legend(fontsize=11, framealpha=0.2)
     ax.yaxis.grid(True, linestyle="--", alpha=0.3, zorder=0)
 
-    # ── Right: horizontal error bar magnified ──────────────────────
     ax2 = axes[1]
     ax2.set_facecolor(BG_COLOR)
 
@@ -259,7 +235,6 @@ def plot_error_analysis():
     print(f"[*] Saved: {out}")
 
 
-# ─────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print("=" * 60)
     print("[*] GENERATING EXTRA CHARTS FROM REAL METRICS")

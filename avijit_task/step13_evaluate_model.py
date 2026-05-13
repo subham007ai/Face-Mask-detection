@@ -1,4 +1,4 @@
-"""Step 13 – Evaluate the trained models on the test set.
+﻿"""Step 13 – Evaluate the trained models on the test set.
 
 Team Member 3 (or 4): Evaluation / Inference
 - Scans directory for mask_model_*.h5
@@ -25,14 +25,12 @@ REPORTS_DIR = ROOT / "reports"
 
 
 def main() -> None:
-    # Find all h5 models
     model_paths = list(ROOT.glob("mask_model_*.h5"))
     if not model_paths:
         print("No models found! Please run step12_train_model.py first to train the models.")
         return
 
     print("Loading test data generator...")
-    # We only need the test generator
     _, _, test_data = build_generators()
     
     true_classes = test_data.classes
@@ -42,10 +40,8 @@ def main() -> None:
     results_summary = []
 
     for model_path in model_paths:
-        # Extract architecture name, e.g., mask_model_EfficientNetB0.h5 -> EfficientNetB0
         arch_name = model_path.stem.replace("mask_model_", "")
         if arch_name == "mask_model":
-            # Fallback for the older naming convention
             arch_name = "EfficientNetB0"
         
         print(f"\n{'='*50}")
@@ -91,21 +87,18 @@ def main() -> None:
         report_file.write_text(json.dumps(report, indent=2), encoding="utf-8")
         print(f"Report saved to: {report_file}")
         
-        # Save to summary
         results_summary.append({
             "Architecture": arch_name,
             "Accuracy": report["test_accuracy"],
             "Loss": report["test_loss"]
         })
 
-    # Print Final Summary Table
     print("\n\n" + "#"*60)
     print("🏆 FINAL MODEL COMPARISON SUMMARY 🏆".center(60))
     print("#"*60)
     print(f"{'Architecture':<20} | {'Test Accuracy':<15} | {'Test Loss':<15}")
     print("-" * 60)
     
-    # Sort by accuracy descending
     results_summary.sort(key=lambda x: x["Accuracy"], reverse=True)
     
     for res in results_summary:

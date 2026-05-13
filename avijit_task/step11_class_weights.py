@@ -1,4 +1,4 @@
-"""Step 11 – Compute class weights for imbalanced training data.
+﻿"""Step 11 – Compute class weights for imbalanced training data.
 
 This step calculates balanced class weights from the training generator
 built in Step 10.  The weights compensate for any class imbalance so the
@@ -7,7 +7,7 @@ model does not become biased toward the majority class.
 Usage in model training:
     from step11_class_weights import get_class_weights
 
-    class_weights = get_class_weights()   # e.g. {0: 1.12, 1: 0.90}
+    class_weights = get_class_weights()
     model.fit(..., class_weight=class_weights)
 """
 
@@ -40,7 +40,6 @@ def _compute_weights(train_data) -> dict:
         Mapping of integer class index to its computed weight,
         e.g. ``{0: 1.12, 1: 0.90}``.
     """
-    # train_data.classes contains the integer label for every sample
     classes = np.unique(train_data.classes)
 
     weights = compute_class_weight(
@@ -66,9 +65,8 @@ def get_class_weights() -> dict:
 
 def build_report(train_data, class_weights: dict) -> dict:
     """Build an auditable report for step 11."""
-    class_indices = dict(train_data.class_indices)  # e.g. {'WithMask': 1, 'WithoutMask': 0}
+    class_indices = dict(train_data.class_indices)
 
-    # Per-class sample counts
     unique, counts = np.unique(train_data.classes, return_counts=True)
     class_counts = {int(k): int(v) for k, v in zip(unique, counts)}
 
